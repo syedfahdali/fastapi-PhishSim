@@ -51,3 +51,9 @@ async def landing_page():
     # Ensure the index.html file is in the same directory as this FastAPI app
     html_path = os.path.join(os.path.dirname(__file__), 'index.html')
     return FileResponse(html_path)
+
+@app.get('/linkedin')
+async def landing_page2():
+    # Ensure the index.html file is in the same directory as this FastAPI app
+    html_path = os.path.join(os.path.dirname(__file__), 'linkedin.html')
+    return FileResponse(html_path)
