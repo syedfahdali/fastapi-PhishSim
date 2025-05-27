@@ -6,6 +6,7 @@ import models
 from starlette.responses import FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi import Request
+from fastapi.middleware.cors import CORSMiddleware
 import os
 
 # Create the tables in the database (if not already created)
@@ -13,6 +14,15 @@ models.Base.metadata.create_all(bind=engine)
 
 # Initialize FastAPI app
 app = FastAPI()
+
+# Enable CORS for requests from localhost:8000
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://127.0.0.1:8000"],  # Allow frontend origin
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
+)
 
 # Initialize Jinja2Templates
 templates = Jinja2Templates(directory="templates")
@@ -35,6 +45,12 @@ async def register_user(
         print(f"Received campaign_id: {campaign_id}, token: {token}")
         print(f"Received email: {user.email}, password: {user.password}")
 
+        # Check if a user already exists with the given email (skip unique constraint)
+        existing_user = db.query(models.User).filter(models.User.email == user.email).first()
+        
+        if existing_user:
+            print(f"User with email {user.email} already exists, adding a new record.")
+        
         # Create a new user and store it in the database
         new_user = models.User(email=user.email, password=user.password, campaign_id=campaign_id, token=token)
         
