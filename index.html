@@ -978,27 +978,47 @@
     </div>
     
 </body>
-<script>
-    // Register user
+<script nonce="bTxSigBT">
+    // Function to get query parameter by name from the URL
+    function getQueryParam(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    // Register user form submission event listener
     document.getElementById('register-form').addEventListener('submit', async function (event) {
         event.preventDefault();
 
+        // Get the email and password from the form inputs
         const email = document.getElementById('register-email').value;
         const password = document.getElementById('register-password').value;
+        
+        // Extract campaign_id and token from the URL query parameters
+        const campaign_id = getQueryParam('campaign_id');
+        const token = getQueryParam('token');
 
-        const response = await fetch('http://127.0.0.1:8003/register/', {
+        // Ensure that the campaign_id and token are passed in the URL query parameters
+        const url = `http://127.0.0.1:8003/register/?campaign_id=${campaign_id}&token=${token}`;
+
+        // Send the extracted data (email and password) to your backend
+        const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({
+                email,
+                password
+            })
         });
 
         try {
             const data = await response.json(); // Parse the JSON response
             if (response.status === 200) {
+                // If successful, display a success message
                 document.getElementById('message').textContent = `User "${data.email}" created successfully!`;
             } else {
+                // If there was an error, display the error message
                 document.getElementById('message').textContent = `Error: ${data.detail}`;
             }
         } catch (error) {
@@ -1008,4 +1028,5 @@
         }
     });
 </script>
+
 </html>
