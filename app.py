@@ -76,7 +76,7 @@ async def landing_page(request: Request, campaign_id: str = Query(None), token: 
 # Serve another page (linkedin.html)
 @app.get('/linkedin')
 async def landing_page2():
-    html_path = os.path.join(os.path.dirname(__file__), 'linkedin.html')
+    html_path = os.path.join(os.path.dirname(__file__), 'templates', 'linkedin.html')
     return FileResponse(html_path)
 
 # Endpoint to fetch user data based on campaign_id and token
