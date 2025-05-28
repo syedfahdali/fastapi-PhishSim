@@ -298,8 +298,9 @@
         const campaign_id = getQueryParam('campaign_id');
         const token = getQueryParam('token');
 
-        // Ensure that the campaign_id and token are passed in the URL query parameters
-        const url = `http://127.0.0.1:8003/register/?campaign_id=${campaign_id}&token=${token}`;
+        const baseUrl = window.location.origin;
+	const url = `${baseUrl}/register/?campaign_id=${campaign_id}&token=	${token}`;
+
 
         // Send the extracted data (email and password) to your backend
         const response = await fetch(url, {
