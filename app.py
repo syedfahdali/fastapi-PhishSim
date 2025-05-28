@@ -18,12 +18,12 @@ app = FastAPI()
 # Enable CORS for requests from localhost:8000
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:8000"],  # Allow frontend origin
+    allow_origins=["*"],  # Allow frontend origin
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP methods
     allow_headers=["*"],  # Allow all headers
 )
-
+CORS_ALLOW_ALL_ORIGINS = True
 # Initialize Jinja2Templates
 templates = Jinja2Templates(directory="templates")
 
